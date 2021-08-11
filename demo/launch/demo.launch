@@ -10,4 +10,6 @@
   <include file="$(find moveit_resources_panda_moveit_config)/launch/moveit_rviz.launch">
     <arg name="rviz_config" value="$(find moveit_task_constructor_demo)/config/mtc.rviz" />
   </include>
+  
+  <node pkg="tf" type="static_transform_publisher" name="tf_broadcaster" args="0 0 0 0 0 0 1 world panda_link0 10" />
 </launch>

@@ -62,8 +62,7 @@ void GraspProvider::composeGoal() {
 	                     std::bind(&GraspProvider::activeCallback, this),
 	                     std::bind(&GraspProvider::feedbackCallback, this, std::placeholders::_1));
 
-	ROS_DEBUG_NAMED(LOGNAME, "Goal sent to server to grasp object: %s", goal.object.name.c_str());
-}
+	ROS_DEBUG_NAMED(LOGNAME, "Goal sent to server to grasp object: %s", goal.object.name.c_str());}
 
 bool GraspProvider::monitorGoal() {
 	// monitor timeout
@@ -72,11 +71,10 @@ bool GraspProvider::monitorGoal() {
 
 	while (nh_.ok()) {
 		ros::spinOnce();
-
 		// timeout reached
 		if (ros::Time::now().toSec() > timeout_time && monitor_timeout) {
 			clientPtr_->cancelGoal();
-			ROS_ERROR_NAMED(LOGNAME, "Grasp pose generator time out reached");
+            ROS_ERROR_NAMED(LOGNAME, "Grasp pose generator time out reached");
 			return false;
 		} else if (found_candidates_) {
 			// timeout not reached (or not active) and grasps are found
@@ -84,7 +82,7 @@ bool GraspProvider::monitorGoal() {
 			break;
 		}
 	}
-
+	
 	return true;
 }
 
@@ -94,7 +92,7 @@ void GraspProvider::activeCallback() {
 }
 
 void GraspProvider::feedbackCallback(const grasping_msgs::GraspPlanningFeedbackConstPtr& feedback) {
-	const std::lock_guard<std::mutex> lock(grasp_mutex_);
+// 	const std::lock_guard<std::mutex> lock(grasp_mutex_);
 	grasp_candidates_ = feedback->grasps;
 	found_candidates_ = true;
 }
@@ -158,7 +156,7 @@ void GraspProvider::compute() {
 
 	// monitor feedback/results
 	// blocking function untill timeout reached or results received
-	const std::lock_guard<std::mutex> lock(grasp_mutex_);
+// 	const std::lock_guard<std::mutex> lock(grasp_mutex_);
 	if (monitorGoal()) {
 		for (unsigned int i = 0; i < grasp_candidates_.size(); i++) {
 			InterfaceState state(scene);
